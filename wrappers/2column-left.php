@@ -31,7 +31,7 @@
             </div>
             <?php Theme::getContent("bottom"); ?>
         </div>
-        <script type="text/javascript" src="<?= get_template_directory_uri() ?>/public/js/bootsquery.js?v=2"></script>
+        <script type="text/javascript" src="<?= get_template_directory_uri() ?>/public/js/bootsquery.js?v=2" async></script>
         <script type="text/javascript" src="<?= get_template_directory_uri() ?>/public/js/analytics.js" async></script>
         <?php wp_footer(); ?>
     </body>
