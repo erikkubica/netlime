@@ -1,0 +1,15 @@
+sidebars:
+    sidebar-left:
+        name: Left sidebar
+        description: Place some stuff here
+        html-tag: div
+        html-class: widget box
+        heading-tag: h3
+        heading-class:
+    sidebar-right:
+        name: Right sidebar
+        description: Place some stuff here
+        html-tag: dib
+        html-class: widget box
+        heading-tag: h3
+        heading-class:

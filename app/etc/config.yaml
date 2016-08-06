@@ -1,0 +1,9 @@
+# General configuration
+runtime: prod # dev/prod
+
+# Cache is disabled in dev runtime
+# even if they are set to true for sections
+cache:
+    type: fs # fs = filesystem | wp_cache = (wp cache can support redis, memcache or database)
+    lifetime: 3600 # seconds
+    minify: true

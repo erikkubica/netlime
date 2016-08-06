@@ -1,0 +1,35 @@
+# Define sections
+sections:
+    header: #section key, this is used to add section to template
+        template: "templates/sections/header.php"
+        cache: true
+    footer:
+        template: "templates/sections/footer.php"
+        cache: true
+    sidebar_right:
+        template: "templates/sections/sidebar_right.php"
+        cache: true
+    sidebar_left:
+        template: "templates/sections/sidebar_left.php"
+        cache: true
+    post_list:
+        template: "templates/sections/post_list.php"
+        cache: false
+    post_content:
+        template: "templates/post/content.php"
+        cache: true
+    page_content:
+        template: "templates/page/content.php"
+        cache: true
+    404_content:
+        template: "templates/404/content.php"
+        cache: true
+    search_header:
+        template: "templates/sections/search_header.php"
+        cache: true
+    pagination:
+        template: "templates/sections/pagination.php"
+        cache: true
+    comments:
+        template: "templates/sections/comments.php"
+        cache: false

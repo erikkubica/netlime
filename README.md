@@ -1,2 +1,2 @@
-# netlime
-WordPress Theme Base
+# NetLime WordPress Theme Base
+Todo: Project description

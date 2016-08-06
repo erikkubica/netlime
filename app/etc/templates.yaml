@@ -1,0 +1,123 @@
+# Define templates
+templates:
+    404: # template key, in case of post_type it can be "page/post/my_custom_postype"
+         # in case of is_search() == true its search, is_single() its post, etc..
+        name: "Default wordrepss 404.php" #name of template
+        is_page_template: false # if true then this template acts as template-*.php if its false it acts as search.php index.php post.php page.php 404.php
+        wrapper: 2column-right # wrapper key defined in wrappers, defines whitch wrapper will be used for this template
+        sections: # sections on this "page" or in this template
+            header: # section key defined in sections
+                location: top # location where it will be displayed in wrapper. ex. 2column-right wrapper consists of 4 locations:
+                              # top,right,content,bottom, if in wrapper you call Theme::getContent("top"); then this
+                              # section will be rendered there.
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            404_content:
+                location: content
+    index:
+        name: "acts as index.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            post_list:
+                location: content
+            pagination:
+                location: content
+    archive:
+        name: "acts as index.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            post_list:
+                location: content
+            pagination:
+                location: content
+    archive-partner:
+        name: "acts as index.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            post_list:
+                location: content
+            pagination:
+                location: content
+    category:
+        name: "acts as category.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            post_list:
+                location: content
+            pagination:
+                location: content
+    search:
+        name: "acts as search.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            search_header:
+                location: content
+            post_list:
+                location: content
+            pagination:
+                location: content
+    post:
+        name: "acts as post.php/single.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            post_content:
+                location: content
+            comments:
+                location: content
+    page:
+        name: "acts as page.php"
+        is_page_template: false
+        wrapper: 2column-right
+        sections:
+            header:
+                location: top
+            footer:
+                location: bottom
+            sidebar_right:
+                location: right
+            page_content:
+                location: content

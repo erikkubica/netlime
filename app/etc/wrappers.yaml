@@ -1,0 +1,10 @@
+# Define wrappers
+wrappers:
+    1column: #wrapper key this is used to set wrapper for template
+        template: "wrappers/1column.php"
+    2column-left:
+        template: "wrappers/2column-left.php"
+    2column-right:
+        template: "wrappers/2column-right.php"
+    3column:
+        template: "wrappers/3column.php"
