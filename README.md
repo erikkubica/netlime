@@ -16,7 +16,7 @@ separate file configuration file for sidebars, which is more readable and cleane
 There is one major problem with all caching plugins, you cannot define which parts(sections) of page
 you want to cache and which parts you won't cache. These caching plugins forces you to use full page for whole website
 or just to few pages.
-
+    
 Sections are parts of your page. You can have sections where content changes only once per month/week/day/year. 
 Some of them changes content hourly. So why to not cache only pars that are changing its content rarely.
 This will prevent to execute loops, queries, printing outputs and more, each time the user visits the page.
