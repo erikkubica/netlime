@@ -16,6 +16,8 @@ templates:
                 location: right
             404_content:
                 location: content
+            head:
+                location: head
     index:
         name: "acts as index.php"
         is_page_template: false
@@ -31,6 +33,8 @@ templates:
                 location: content
             pagination:
                 location: content
+            head:
+                location: head
     archive:
         name: "acts as index.php"
         is_page_template: false
@@ -46,6 +50,8 @@ templates:
                 location: content
             pagination:
                 location: content
+            head:
+                location: head
     archive-partner:
         name: "acts as index.php"
         is_page_template: false
@@ -61,6 +67,8 @@ templates:
                 location: content
             pagination:
                 location: content
+            head:
+                location: head
     category:
         name: "acts as category.php"
         is_page_template: false
@@ -76,6 +84,8 @@ templates:
                 location: content
             pagination:
                 location: content
+            head:
+                location: head
     search:
         name: "acts as search.php"
         is_page_template: false
@@ -93,6 +103,8 @@ templates:
                 location: content
             pagination:
                 location: content
+            head:
+                location: head
     post:
         name: "acts as post.php/single.php"
         is_page_template: false
@@ -108,6 +120,8 @@ templates:
                 location: content
             comments:
                 location: content
+            head:
+                location: head
     page:
         name: "acts as page.php"
         is_page_template: false
@@ -121,3 +135,5 @@ templates:
                 location: right
             page_content:
                 location: content
+            head:
+                location: head

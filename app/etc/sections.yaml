@@ -1,5 +1,8 @@
 # Define sections
 sections:
+    head:
+        template: "templates/sections/head.php"
+        cache: true
     header: #section key, this is used to add section to template
         template: "templates/sections/header.php"
         cache: true
@@ -14,7 +17,7 @@ sections:
         cache: true
     post_list:
         template: "templates/sections/post_list.php"
-        cache: false
+        cache: true
     post_content:
         template: "templates/post/content.php"
         cache: true

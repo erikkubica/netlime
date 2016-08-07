@@ -17,8 +17,6 @@ endforeach;
 
 Theme::init();
 
-# TODO: Move this to proper location
-
 function mytheme_comment($comment, $args, $depth)
 {
     ?>

@@ -167,6 +167,14 @@ abstract class Theme
 
         }, 99);
     }
+    
+    public static function echobig($string, $bufferSize = 8192) {
+  $splitString = str_split($string, $bufferSize);
+
+  foreach($splitString as $chunk) {
+    echo $chunk;
+  }
+}
 
     /**
      * Used to include sections of given location inside wrapper
@@ -191,17 +199,20 @@ abstract class Theme
 
                 # Get cached content if false it does not exists
                 $cache = self::getCache($template);
-
+                
                 # check for false in case of empty string
                 if ($cache !== false):
-                    echo $cache;
+                    
+                    self::echobig($cache);
+                    if(isset($_GET["die"])):die;else:endif;
                 else:
-                    echo self::doCache($template);
+                    self::echobig(self::doCache($template));
                 endif;
             else:
                 include get_template_directory() . "/" . $template;
             endif;
         endforeach;
+        
     }
 
     /**
