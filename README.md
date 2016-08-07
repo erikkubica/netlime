@@ -14,14 +14,14 @@ separate file configuration file for sidebars, which is more readable and cleane
 
 ## Speed
 There is one major problem with all caching plugins, you cannot define which parts(sections) of page
-you want to cache and which parts you wont cache. These caching plugins forces you to use full page for whole website
+you want to cache and which parts you won't cache. These caching plugins forces you to use full page for whole website
 or just to few pages.
 
-Sections are parts of you page, you can have sections where content changes only once per month/week/day/year. 
+Sections are parts of your page. You can have sections where content changes only once per month/week/day/year. 
 Some of them changes content hourly. So why to not cache only pars that are changing its content rarely.
-This will prevent to execute loops, queries, printing outpus and more, each time the user visits the page.
+This will prevent to execute loops, queries, printing outputs and more, each time the user visits the page.
 
-Lets say a example from https://www.netlime.eu content inside <head></head> is mostly cached. I call this section
+Lets say a example from https://www.netlime.eu content inside head html tag is cached. I call this section
 "head" where caching is enabled. Until I don't change site title, meta, and others... I don't need from wordpress
 to generate its content using wp_head() which impacts on performance.
 
