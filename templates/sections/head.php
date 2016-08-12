@@ -10,6 +10,3 @@ Good for render block but adds +50ms to time to first byte aka waiting time
 <link rel="prefetch prerender" href="https://www.netlime.eu/" as="document">
 <link rel="prefetch prerender" href="https://www.netlime.eu/samsung-galaxy-s6-still-worth-2016/" as="document">
 <link rel="prefetch prerender" href="https://www.netlime.eu/lenovo-ideapad-700-review/" as="document">
-<link rel="prefetch prerender" href="https://www.netlime.eu/ako-byt-uspesny-zarobte-s-pracou-ktoru-mate-radi-tvrda-praca/" as="document">
-<link rel="prefetch prerender" href="https://www.netlime.eu/structure-simple-blog-symfony2-tutorial/" as="document">
-<link rel="prefetch prerender" href="https://www.netlime.eu/my-feelings-about-wordpress-programming-after-two-months/" as="document">
