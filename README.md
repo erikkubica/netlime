@@ -1,5 +1,7 @@
 # NetLime WordPress Theme Base
 
+###### I am not man of words
+
 ## The goal
 The goal is to create WordPress Theme base that is simple, fast, multi-wrapper and section(block) based.
 
@@ -20,6 +22,9 @@ or just to few pages.
 Sections are parts of your page. You can have sections where content changes only once per month/week/day/year. 
 Some of them changes content hourly. So why to not cache only pars that are changing its content rarely.
 This will prevent to execute loops, queries, printing outputs and more, each time the user visits the page.
+
+[-!-] Caching of section is template specific. You can enable cache for section on templace XY, 
+but you can disable caching of same section on Template XS. [-!-] 
 
 Lets say a example from https://www.netlime.eu content inside head html tag is cached. I call this section
 "head" where caching is enabled. Until I don't change site title, meta, and others... I don't need from wordpress
@@ -88,7 +93,18 @@ because caching for section this is turned on, but the comments section is rende
 Please refer to /app/etc/wrappers.yaml file
 
 ## What are virtual templates and how to create them
-@ToDo
+Virtual templates non-existing template files (single.php single-mycpt.php, template-xy.php,etc...).
+
+Using these templates you specify which wrapper & sections will your template have.
+
+Virtual templates is defined inside /app/etc/templates.yaml refer this file more information.
 
 ## What are sections (blocks) and how to create them
-@ToDo
+Sections are the final files that contains html that contains some data. 
+
+Imagine it like a puzzle. Let´s assume, that a complete page is when all puzzle pieces are on right place. 
+Section are just these puzzle pieces. When you create these pieces in /app/etc/sections.yaml then you can use them in /app/etc/templates.yaml
+
+Section caching is template specific, this is the reason why there is no cachne configuration inside /app/etc/sections.yaml, 
+caching configuration for section is done in template configuration. That approach allows you to cache same section in template XY
+but don´ cache it on template XS.
