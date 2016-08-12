@@ -38,13 +38,57 @@ This approach can help to gain huge performance gain without caching full page a
 will be not displayed, because full page is cached.
 
 ## Features & Planned features
-Todo
+#### Feaures
+* Virtual templates
+* Template wrappers
+* Page sections
+* Yaml configuration
+* Separate caching for each section
+* Disable emoji implemented
+* Define navigation menus
+* Define widget areas (sidebars)
+* Comes with bootstrap sources (less)
 
-## What is wrappers and how to create them
-Todo
+#### Planned
+* Clear cache from admin
+* Define custom post types
+* Define ACF fields
+* More caching options
+  * Do not generate cache on post requests
+  * Do not generate cache when using not existing get query parameters
+* Allow sections to have their view class containing functions for required data
+* Allow to configure basic WordPress features like turn on/off comments
+* Allow to brand admin login page
+* Some useful asset managing system
+* And more... @ToDo: Think about it
 
-## What is virtual templates and how to create them
-Todo
+## What are wrappers and how to create them
+#### What are wrappers?
+Wrappers are basically php files containing skeleton layout for your template/templates.
+An wrapper contains the html "html,head,body" tags. Inside body you have the layout for example
+1 column, 2 columns with left sidebar, 2 columns with right sidebar, 3 columns, etc...
 
-## What is sections (blocks) and how to create them
-Todo
+#### How do I set content for wrapper?
+Using locations. When you are configuring an template, you place sections to given locations.
+Locations are defined by you. Let´s say that you configure for template an section to "myCustomLocation"
+Then you need just call Theme::getContent("myCustomLocation"); in your wrapper.
+
+Basically what getContent does, is that it includes all sections defined on given location defined
+in actual template.
+
+Real world usage example:
+I have defined "post_content" and "comments" section for "post detail" template, both of these 
+section has location called "content".
+
+My "post detail" template has "2columns-right" wrapper. So when I call Theme::getContent("content"); 
+in wrapper, these two sections are rendered, post_content section is rendered from cache, 
+because caching for section this is turned on, but the comments section is rendered casually, because has caching off.
+
+#### How I create wrapper?
+Please refer to /app/etc/wrappers.yaml file
+
+## What are virtual templates and how to create them
+@ToDo
+
+## What are sections (blocks) and how to create them
+@ToDo
