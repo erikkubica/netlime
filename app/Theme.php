@@ -94,12 +94,12 @@ abstract class Theme
      */
     public static function setupVirtualTemplates()
     {
-        // Make fake virtual templates to avoid creating template-*.php files in theme root
+        #  Make fake virtual templates to avoid creating template-*.php files in theme root
         add_action('edit_form_after_editor', ["Theme", "custom_page_templates_init"]);
         add_action('load-post.php', ["Theme", 'custom_page_templates_init_post']);
         add_action('load-post-new.php', ["Theme", 'custom_page_templates_init_post']);
 
-        // Add templates from config to wordpress templates
+        #  Add templates from config to wordpress templates
         add_filter('custom_page_templates', function ($now_templates) {
             foreach (self::$config["templates"] as $key => $template):
                 if ($template["is_page_template"] == false):
@@ -154,17 +154,19 @@ abstract class Theme
             endif;
 
             if ($basename):
-                // Set current template to use it in other functions
+                #  Set current template to use it in other functions
                 Theme::$current_template = self::$config["templates"][$basename];
 
-                // Get the wrapper of template, and search it inside registered wrappers
-                // if found, set the wrapper if not throw 404 template
+                #  Get the wrapper of template, and search it inside registered wrappers
+                #  if found, set the wrapper if not throw 404 template
                 $wrapper = self::$config["templates"][$basename]["wrapper"];
                 if (isset(self::$config["wrappers"][$wrapper])):
                     return get_template_directory() . "/" . self::$config["wrappers"][$wrapper]["template"];
                 endif;
             endif;
 
+            # In case if something fails return WordPress default
+            return $main;
         }, 99);
     }
 
@@ -181,7 +183,7 @@ abstract class Theme
             if ($section["location"] != $location):continue;endif;
 
             # Get the template
-            $template = self::$config["sections"][$key]["template"];
+            $sectionTemplate = self::$config["sections"][$key]["template"];
 
             # Check if cache is enabled for this section
             $is_cache_section_enabled = self::$config["sections"][$key]["cache"];
@@ -196,16 +198,16 @@ abstract class Theme
             if ($is_cache_section_enabled && self::$config["runtime"] == "prod" && !is_user_logged_in() && !$is_post_req && !$is_ajax):
 
                 # Get cached content if false it does not exists
-                $cache = self::getCache($template);
+                $cache = self::getCache($sectionTemplate);
 
                 # check for false in case of empty string
                 if ($cache !== false):
                     echo $cache;
                 else:
-                    echo self::doCache($template);
+                    echo self::doCache($sectionTemplate);
                 endif;
             else:
-                include get_template_directory() . "/" . $template;
+                include get_template_directory() . "/" . $sectionTemplate;
             endif;
         endforeach;
     }
@@ -213,31 +215,31 @@ abstract class Theme
     /**
      * Get absolute path of cache file
      *
-     * @param $template
+     * @param $sectionTemplate
      * @return string
      */
-    protected static function getCacheFile($template)
+    protected static function getCacheFile($sectionTemplate)
     {
-        $filename = md5($_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . "-" . $template);
+        $filename = md5($_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . "-" . $sectionTemplate);
         return dirname(__FILE__) . "/cache/" . $filename;
     }
 
     /**
      * Create the cache
      *
-     * @param $template string Name of the template
+     * @param $sectionTemplate string Name of the template
      * @return string Cached content
      */
-    private static function doCache($template)
+    private static function doCache($sectionTemplate)
     {
         # Get cache file absolute path
-        $file = self::getCacheFile($template);
+        $file = self::getCacheFile($sectionTemplate);
 
         # Start buffering output
         ob_start();
 
         # Render the template
-        include get_template_directory() . "/" . $template;
+        include get_template_directory() . "/" . $sectionTemplate;
 
         # Minify the output
         if (self::$config["cache"]["minify"]):
@@ -248,7 +250,7 @@ abstract class Theme
 
         # Write output to memory or file
         if (self::$config["cache"]["type"] == "wp_cache"):
-            wp_cache_add(basename($file), $cache, "blocks_cache", self::$config["cache"]["lifetime"]);
+            wp_cache_add(basename($file), $cache, "sections_cache", self::$config["cache"]["lifetime"]);
         else:
             # Delete file if already exists
             if (file_exists($file)):
@@ -268,13 +270,13 @@ abstract class Theme
     /**
      * Get cached html
      *
-     * @param $template
+     * @param $sectionTemplate
      * @return bool|mixed|string
      */
-    protected static function getCache($template)
+    protected static function getCache($sectionTemplate)
     {
         # Get cache file absolute path
-        $file = self::getCacheFile($template);
+        $file = self::getCacheFile($sectionTemplate);
 
         # Define variable with false
         $cache = false;
@@ -282,7 +284,7 @@ abstract class Theme
         # TODO: When not redis, than wp_cache wont load from cache
         # Get cached html depending on cache type
         if (self::$config["cache"]["type"] == "wp_cache"):
-            $cache = wp_cache_get(basename($file), "blocks_cache");
+            $cache = wp_cache_get(basename($file), "sections_cache");
         else:
             if (file_exists($file) && (time() - filemtime($file) < self::$config["cache"]["lifetime"])):
                 $cache = file_get_contents($file);
@@ -348,7 +350,7 @@ abstract class Theme
     public static function set_custom_page_templates($templates = array())
     {
         if (!is_array($templates) || empty($templates)) return;
-        $core = array_flip((array)get_page_templates()); // templates defined by file
+        $core = array_flip((array)get_page_templates()); #  Templates defined by file
         $data = array_filter(array_merge($core, $templates));
         ksort($data);
         $stylesheet = get_stylesheet();
