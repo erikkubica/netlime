@@ -244,8 +244,15 @@ abstract class Theme
         if (self::$config["cache"]["type"] == "wp_cache"):
             wp_cache_add(basename($file), $cache, "blocks_cache", self::$config["cache"]["lifetime"]);
         else:
-            if (file_exists($file)): unlink($file); endif;
-            file_put_contents($file, $cache);
+            # Delete file if already exists
+            if (file_exists($file)):
+                unlink($file);
+            endif;
+
+            # Prevents creating empty cache file
+            if (!empty($cache) || $cache != ""):
+                file_put_contents($file, $cache);
+            endif;
         endif;
 
         # Return output
