@@ -186,8 +186,14 @@ abstract class Theme
             # Check if cache is enabled for this section
             $is_cache_section_enabled = self::$config["sections"][$key]["cache"];
 
+            # Check if ajax request
+            $is_ajax = defined('DOING_AJAX') && DOING_AJAX;
+
+            # Check if post request
+            $is_post_req = $_SERVER['REQUEST_METHOD'] == 'POST';
+
             # If cache is enabled and runtime is production then do cache
-            if ($is_cache_section_enabled && self::$config["runtime"] == "prod"):
+            if ($is_cache_section_enabled && self::$config["runtime"] == "prod" && !is_user_logged_in() && !$is_post_req && !$is_ajax):
 
                 # Get cached content if false it does not exists
                 $cache = self::getCache($template);
