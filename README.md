@@ -53,13 +53,16 @@ will be not displayed, because full page is cached.
 * Define navigation menus
 * Define widget areas (sidebars)
 * Comes with bootstrap sources (less)
-
+* More caching options
+  * Do not generate cache on post requests
+  * Do not generate cache on ajax requests
+  * Do not generate cache if user/admin is logged in
+  
 #### Planned
 * Clear cache from admin
 * Define custom post types
 * Define ACF fields
 * More caching options
-  * Do not generate cache on post requests
   * Do not generate cache when using not existing get query parameters
 * Allow sections to have their view class containing functions for required data
 * Allow to configure basic WordPress features like turn on/off comments
