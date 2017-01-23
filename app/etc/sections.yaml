@@ -1,11 +1,12 @@
 # Define sections
 sections:
-    head:
+    head: # Section key, this is used to add section to template
         template: "templates/sections/head.php"
-        cache: true
-    header: #section key, this is used to add section to template
+        cache: false
+    header:
         template: "templates/sections/header.php"
         cache: true
+        fields: [ show_menu | slider ]
     footer:
         template: "templates/sections/footer.php"
         cache: true

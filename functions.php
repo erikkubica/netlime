@@ -15,7 +15,25 @@ foreach ($includes as $include):
     require_once dirname(__FILE__) . $include;
 endforeach;
 
+#
+### Add Custom code here using hooks
+### or feel free to modify app/Theme.php
+### or inherit app/Theme.php
+#
+
+add_action("before_nlt_setup", function(){
+   // something to do on the beginning of Theme::init();
+});
+
+#
+### Init the theme engine
+### Note: If you are inheriting app/Theme.php init your class instead of Theme
+#
 Theme::init();
+
+#
+### Some various functions feel free to place them everywhere you want
+#
 
 function mytheme_comment($comment, $args, $depth)
 {

@@ -14,54 +14,183 @@ abstract class Theme
 
     public static function init()
     {
+        # Create action for customizers
+        do_action("before_nlt_setup");
+
+        # Clear cache before render
+        self::flushOldCache();
+
+        # Core setup
         self::initConfig();
         self::addSupports();
         self::registerNavigation();
-        self::registerSidebars();
-        self::titleToHead();
         self::setupVirtualTemplates();
         self::setupWrapper();
+        self::setupFlushCache();
+        self::titleToHead();
+
+        # Add some more stuff
+        register_sidebar(array(
+            'name' => 'Sidebar 1',
+            'id' => 'sidebar-1',
+            'description' => '',
+            'before_widget' => '<li id="%1$s" class="widget %2$s">',
+            'after_widget' => "</li>",
+            'before_title' => '<h2 class="widgettitle">',
+            'after_title' => "</h2>"
+        ));
+
+        # Create action for customizers
+        do_action("after_nlt_setup");
+    }
+
+    /**
+     * Show notice in admin area
+     *
+     * @param $message string A notice message
+     */
+    public function doNotice($message)
+    {
+        # Create action for customizers
+        do_action("before_nlt_notice");
+
+        add_action('admin_notices', function () use ($message) {
+            echo '<div class="notice notice-success is-dismissible">
+                <p>' . $message . '</p>
+        </div>';
+        });
+
+        # Create action for customizers
+        do_action("after_nlt_notice");
+    }
+
+    /**
+     * Registers link & action for it on admin bar to flush cache
+     */
+    protected static function setupFlushCache()
+    {
+        # Create action for customizers
+        do_action("before_nlt_setup_flush_cache");
+
+        # Add flush cache link to admin bar
+        add_action('admin_bar_menu', function ($wp_admin_bar) {
+            $args = array(
+                'id' => 'cache_flush_link',
+                'title' => 'Flush cache',
+                'href' => get_admin_url() . '?flushCache',
+                'meta' => array('class' => 'cache-flush-link')
+            );
+            $wp_admin_bar->add_node($args);
+        }, 999);
+
+        # Force cleat all cache, otherwise just remove old
+        if (isset($_GET["flushCache"]) && is_admin() && is_user_logged_in()):
+            self::flushCache();
+            self::doNotice(__("Cache has been flushed."));
+        endif;
+
+        # Create action for customizers
+        do_action("after_nlt_setup_flush_cache");
+    }
+
+    /**
+     * Force clear all cached files
+     */
+    public static function flushCache()
+    {
+        # Create action for customizers
+        do_action("before_nlt_flush_cache");
+
+        array_map("unlink", glob(self::$base_path . "/app/cache/*"));
+
+        # Create action for customizers
+        do_action("after_nlt_flush_cache");
+    }
+
+    /**
+     * Clears all cached files that is older than specified cache lifetime
+     * because sometimes bots are requesting urls that is visited only once and
+     * after a while there will be thousands of files without any reason.
+     */
+    private static function flushOldCache()
+    {
+        # Create action for customizers
+        do_action("before_nlt_flush_old_cache");
+
+        $files = glob(self::$base_path . "/app/cache/*");
+        $files = (is_array($files) && $files ? $files : array());
+
+        foreach ($files as $file):
+            if (file_exists($file) && (time() - filemtime($file) > self::$config["cache"]["lifetime"])):
+                unlink($file);
+            endif;
+        endforeach;
+
+        # Create action for customizers
+        do_action("after_ntl_flush_old_cache");
     }
 
     /**
      * Initializes theme configuration
      */
-    public static function initConfig()
+    protected static function initConfig()
     {
+        # Create action for customizers
+        do_action("before_nlt_init_config");
+
         self::$base_path = get_template_directory();
         self::$config_path = self::$base_path . "/app/etc/";
+
         foreach (self::$configs as $c):
             $parsed = Yaml::parse(file_get_contents(self::$config_path . $c . ".yaml"));
             if (is_array($parsed)):
                 self::$config = array_merge($parsed, self::$config);
             endif;
         endforeach;
+
+        # Create action for customizers
+        do_action("after_nlt_init_config");
     }
 
     /**
      * Add theme features
      */
-    public static function addSupports()
+    protected static function addSupports()
     {
+        # Create action for customizers
+        do_action("before_nlt_add_supports");
+
         add_theme_support('post-thumbnails');
         add_theme_support('widgets');
+
+        # Create action for customizers
+        do_action("after_nlt_add_supports");
     }
 
     /**
      * Register navigation menus
      */
-    public static function registerNavigation()
+    protected static function registerNavigation()
     {
+        # Create action for customizers
+        do_action("before_nlt_register_navigation");
+
         foreach (self::$config["navigation"] as $name => $description):
             register_nav_menu($name, $description);
         endforeach;
+
+        # Create action for customizers
+        do_action("after_nlt_register_navigation");
     }
 
     /**
      * Register sidebars
      */
-    public static function registerSidebars()
+    protected static function registerSidebars()
     {
+        # Create action for customizers
+        do_action("before_nlt_register_sidebars");
+
         foreach (self::$config["sidebars"] as $id => $sidebar):
             add_action("widgets_init", function () use ($id, $sidebar) {
                 register_sidebar(array(
@@ -75,12 +204,15 @@ abstract class Theme
                 ));
             });
         endforeach;
+
+        # Create action for customizers
+        do_action("after_nlt_register_sidebars");
     }
 
     /**
      * Add wp_title() to wp_head()
      */
-    public static function titleToHead()
+    protected static function titleToHead()
     {
         add_action("wp_head", function () {
             echo '<title>';
@@ -92,7 +224,7 @@ abstract class Theme
     /**
      * Setup virtual templates, that simulates template-*.php files
      */
-    public static function setupVirtualTemplates()
+    protected static function setupVirtualTemplates()
     {
         #  Make fake virtual templates to avoid creating template-*.php files in theme root
         add_action('edit_form_after_editor', ["Theme", "custom_page_templates_init"]);
@@ -114,8 +246,11 @@ abstract class Theme
     /**
      * Wraps template around
      */
-    public static function setupWrapper()
+    protected static function setupWrapper()
     {
+        # Create action for customizers
+        do_action("before_nlt_setup_wrapper");
+
         add_filter('template_include', function ($main) {
 
             $basename = false;
@@ -168,6 +303,9 @@ abstract class Theme
             # In case if something fails return WordPress default
             return $main;
         }, 99);
+
+        # Create action for customizers
+        do_action("after_ntl_setup_wrapper");
     }
 
     /**
@@ -177,6 +315,9 @@ abstract class Theme
      */
     public static function getContent($location)
     {
+        # Create action for customizers
+        do_action("before_nlt_get_content");
+
         foreach (self::$current_template["sections"] as $key => $section):
 
             # skip if section is not in given location
@@ -210,6 +351,9 @@ abstract class Theme
                 include get_template_directory() . "/" . $sectionTemplate;
             endif;
         endforeach;
+
+        # Create action for customizers
+        do_action("after_nlt_get_content");
     }
 
     /**
@@ -220,7 +364,14 @@ abstract class Theme
      */
     protected static function getCacheFile($sectionTemplate)
     {
+        # Create action for customizers
+        do_action("before_nlt_get_cache_file", $sectionTemplate);
+
         $filename = md5($_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . "-" . $sectionTemplate);
+
+        # Create action for customizers
+        do_action("after_nlt_get_cache_file", $filename);
+
         return dirname(__FILE__) . "/cache/" . $filename;
     }
 
@@ -230,8 +381,11 @@ abstract class Theme
      * @param $sectionTemplate string Name of the template
      * @return string Cached content
      */
-    private static function doCache($sectionTemplate)
+    protected static function doCache($sectionTemplate)
     {
+        # Create action for customizers
+        do_action("before_nlt_do_cache", $sectionTemplate);
+
         # Get cache file absolute path
         $file = self::getCacheFile($sectionTemplate);
 
@@ -263,6 +417,9 @@ abstract class Theme
             endif;
         endif;
 
+        # Create action for customizers
+        do_action("after_nlt_do_cache", $cache);
+
         # Return output
         return $cache;
     }
@@ -275,6 +432,9 @@ abstract class Theme
      */
     protected static function getCache($sectionTemplate)
     {
+        # Create action for customizers
+        do_action("before_nlt_get_cache", $sectionTemplate);
+
         # Get cache file absolute path
         $file = self::getCacheFile($sectionTemplate);
 
@@ -290,6 +450,9 @@ abstract class Theme
                 $cache = file_get_contents($file);
             endif;
         endif;
+
+        # Create action for customizers
+        do_action("after_ntl_get_cache", $cache);
 
         # Return cached html
         return $cache;
