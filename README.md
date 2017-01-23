@@ -57,9 +57,11 @@ will be not displayed, because full page is cached.
   * Do not generate cache on post requests
   * Do not generate cache on ajax requests
   * Do not generate cache if user/admin is logged in
-  
-#### Planned
 * Clear cache from admin
+* Expendable method using hooks
+
+#### Planned
+
 * Define custom post types
 * Define ACF fields
 * More caching options
