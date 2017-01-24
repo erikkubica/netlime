@@ -49,7 +49,7 @@ abstract class Theme
      *
      * @param $message string A notice message
      */
-    public function doNotice($message)
+    public static function doNotice($message)
     {
         # Create action for customizers
         do_action("before_nlt_notice");
@@ -101,6 +101,7 @@ abstract class Theme
         # Create action for customizers
         do_action("before_nlt_flush_cache");
 
+        wp_cache_flush();
         array_map("unlink", glob(self::$base_path . "/app/cache/*"));
 
         # Create action for customizers
@@ -222,28 +223,6 @@ abstract class Theme
     }
 
     /**
-     * Setup virtual templates, that simulates template-*.php files
-     */
-    protected static function setupVirtualTemplates()
-    {
-        #  Make fake virtual templates to avoid creating template-*.php files in theme root
-        add_action('edit_form_after_editor', ["Theme", "custom_page_templates_init"]);
-        add_action('load-post.php', ["Theme", 'custom_page_templates_init_post']);
-        add_action('load-post-new.php', ["Theme", 'custom_page_templates_init_post']);
-
-        #  Add templates from config to wordpress templates
-        add_filter('custom_page_templates', function ($now_templates) {
-            foreach (self::$config["templates"] as $key => $template):
-                if ($template["is_page_template"] == false):
-                    continue;
-                endif;
-                $now_templates[$key] = $template["name"];
-            endforeach;
-            return $now_templates;
-        });
-    }
-
-    /**
      * Wraps template around
      */
     protected static function setupWrapper()
@@ -275,6 +254,10 @@ abstract class Theme
                 $basename = get_post_type();
             endif;
 
+            if (is_page() && get_page_template_slug() != ""):
+                $basename_alt = get_page_template_slug();
+            endif;
+
             if (is_archive() && !$basename):
                 $basename = "archive";
                 $basename_alt = "archive-" . get_post_type();
@@ -299,6 +282,7 @@ abstract class Theme
                     return get_template_directory() . "/" . self::$config["wrappers"][$wrapper]["template"];
                 endif;
             endif;
+
 
             # In case if something fails return WordPress default
             return $main;
@@ -458,6 +442,28 @@ abstract class Theme
         return $cache;
     }
 
+    /**
+     * Setup virtual templates, that simulates template-*.php files
+     */
+    public static function setupVirtualTemplates()
+    {
+        #  Make fake virtual templates to avoid creating template-*.php files in theme root
+        add_action('edit_form_after_editor', ["Theme", "custom_page_templates_init"]);
+        add_action('load-post.php', ["Theme", 'custom_page_templates_init_post']);
+        add_action('load-post-new.php', ["Theme", 'custom_page_templates_init_post']);
+
+        #  Add templates from config to wordpress templates
+        add_filter('theme_page_templates', function ($now_templates) {
+            foreach (self::$config["templates"] as $key => $template):
+                if ($template["is_page_template"] == false):
+                    continue;
+                endif;
+                $now_templates[$key] = $template["name"];
+            endforeach;
+            return $now_templates;
+        });
+    }
+
 
     /**
      * Used for template faking
@@ -467,8 +473,8 @@ abstract class Theme
      */
     public static function get_custom_page_templates()
     {
-        $templates = [];
-        return apply_filters('custom_page_templates', $templates);
+        $templates = apply_filters('theme_page_templates', []);
+        return $templates;
     }
 
     /**
